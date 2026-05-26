@@ -1,0 +1,33 @@
+{
+    // ── Cortex-Debug global settings ─────────────────────────────────────────
+    // Points the cortex-debug extension at the correct GDB binary.
+    "cortex-debug.gdbPath": "gdb-multiarch",
+
+    // ── C/C++ IntelliSense ────────────────────────────────────────────────────
+    // Matches the CPU flags in the Makefile: Cortex-M4 + hard-float ABI.
+    "C_Cpp.default.compilerPath": "/usr/bin/arm-none-eabi-gcc",
+    "C_Cpp.default.cStandard": "c11",
+    "C_Cpp.default.compilerArgs": [
+        "-mcpu=cortex-m4",
+        "-mthumb",
+        "-mfpu=fpv4-sp-d16",
+        "-mfloat-abi=hard"
+    ],
+    "C_Cpp.default.defines": [],
+    "C_Cpp.default.includePath": [
+        "${workspaceFolder}/src",
+        "${workspaceFolder}/src/hal",
+        "${workspaceFolder}/src/communications",
+        "${workspaceFolder}/src/motor_control",
+        "${workspaceFolder}/src/hardware",
+        "${workspaceFolder}/src/system"
+    ],
+
+    // ── Editor ────────────────────────────────────────────────────────────────
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "files.trimTrailingWhitespace": true,
+    "[c]": {
+        "editor.rulers": [80]
+    }
+}

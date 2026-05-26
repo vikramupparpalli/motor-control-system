@@ -2,3 +2,6 @@ build/
 *.map
 *.hex
 *.o
+
+# Vendor SVD files (download separately from Renesas / FSP)
+svd/

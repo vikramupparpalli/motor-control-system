@@ -12,7 +12,7 @@ SIZE    := $(CROSS)size
 BUILD_DIR := build
 
 # ---- Source directories — add a new folder path here when creating one ----
-SRC_DIRS := src
+SRC_DIRS := src src/hal
 
 # ---- Target binary stem ---------------------------------------------------
 TARGET_NAME := ra6t1_foc

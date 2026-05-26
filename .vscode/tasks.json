@@ -1,0 +1,67 @@
+{
+    // VS Code task definitions for the RA6T1 bare-metal project.
+    //
+    // Keyboard shortcuts (default VS Code bindings):
+    //   Ctrl+Shift+B  → runs the default build task  (Build (make))
+    //   Terminal → Run Task → pick any task below
+    "version": "2.0.0",
+    "tasks": [
+        {
+            // ── Build ──────────────────────────────────────────────────────
+            "label": "Build (make)",
+            "type": "shell",
+            "command": "make",
+            "args": ["-j${command:cmake.getBuildParallelJobs}"],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": true
+            },
+            "problemMatcher": {
+                // Parses arm-none-eabi-gcc error/warning lines in the terminal.
+                "owner": "gcc",
+                "fileLocation": ["relative", "${workspaceFolder}"],
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        },
+        {
+            // ── Clean ─────────────────────────────────────────────────────
+            "label": "Clean (make clean)",
+            "type": "shell",
+            "command": "make",
+            "args": ["clean"],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": true
+            },
+            "problemMatcher": []
+        },
+        {
+            // ── Rebuild ───────────────────────────────────────────────────
+            "label": "Rebuild (clean + make)",
+            "dependsOrder": "sequence",
+            "dependsOn": ["Clean (make clean)", "Build (make)"],
+            "group": "build",
+            "problemMatcher": []
+        }
+    ]
+}

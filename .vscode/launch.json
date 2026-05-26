@@ -1,0 +1,80 @@
+{
+    // VS Code debug configuration — RA6T1 bare-metal via onboard J-Link
+    //
+    // Extension required : marus25.cortex-debug  (already installed)
+    // Toolchain          : arm-none-eabi / gdb-multiarch
+    // Probe              : onboard J-Link (SWD, detected over USB)
+    // Device             : R7FA6T1AD3CFP  (Renesas RA6T1, Cortex-M4 120 MHz)
+    //
+    // SVD file (peripheral register viewer):
+    //   Download R7FA6T1AD3CFP.svd from the Renesas RA6T1 CMSIS pack or
+    //   https://github.com/renesas/fsp  and place it at:
+    //     svd/R7FA6T1AD3CFP.svd
+    //   The debugger works without it; peripheral registers just won't decode.
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug (J-Link / SWD)",
+            "type": "cortex-debug",
+            "request": "launch",
+            "servertype": "jlink",
+
+            // ── Target ──────────────────────────────────────────────────────
+            "device": "R7FA6T1AD3CFP",
+            "interface": "swd",
+            "runToEntryPoint": "main",
+
+            // ── Binary ──────────────────────────────────────────────────────
+            "executable": "${workspaceFolder}/build/ra6t1_foc.elf",
+
+            // ── GDB ─────────────────────────────────────────────────────────
+            // gdb-multiarch is the Debian/Ubuntu multi-arch build of GDB.
+            // arm-none-eabi-gdb also works if the Arm GNU Toolchain is on PATH.
+            "gdbPath": "gdb-multiarch",
+
+            // ── J-Link GDB Server ────────────────────────────────────────────
+            // JLinkGDBServerCLExe is the headless (CLI) variant — preferred for
+            // IDE-embedded use.  Port 2331 is the J-Link default.
+            "serverpath": "JLinkGDBServerCLExe",
+            "gdbServerArgs": [],
+
+            // ── SVD (peripheral register view) ───────────────────────────────
+            // Comment this line out if the SVD file has not been downloaded yet.
+            "svdFile": "${workspaceFolder}/svd/R7FA6T1AD3CFP.svd",
+
+            // ── Flash & reset ────────────────────────────────────────────────
+            // "load"   → erase + flash the ELF before every debug session.
+            // "attach" → skip flashing (use when the board already has the
+            //            correct firmware and you only want to attach).
+            "loadFiles": ["${workspaceFolder}/build/ra6t1_foc.elf"],
+            "preLaunchCommands": [],
+
+            // ── Build integration ────────────────────────────────────────────
+            // Runs `make` (via tasks.json) before launching the debugger so the
+            // ELF is always up-to-date.
+            "preLaunchTask": "Build (make)",
+
+            // ── Misc ─────────────────────────────────────────────────────────
+            "showDevDebugOutput": "none"
+        },
+        {
+            // Attach to a running target without re-flashing.
+            // Useful during iterative debugging when code hasn't changed.
+            "name": "Attach (J-Link / SWD)",
+            "type": "cortex-debug",
+            "request": "attach",
+            "servertype": "jlink",
+
+            "device": "R7FA6T1AD3CFP",
+            "interface": "swd",
+
+            "executable": "${workspaceFolder}/build/ra6t1_foc.elf",
+            "gdbPath": "gdb-multiarch",
+            "serverpath": "JLinkGDBServerCLExe",
+
+            "svdFile": "${workspaceFolder}/svd/R7FA6T1AD3CFP.svd",
+
+            "showDevDebugOutput": "none"
+        }
+    ]
+}
